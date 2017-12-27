@@ -1,13 +1,13 @@
 <template>
   <div style="float:left;margin-right:30px;margin-bottom:30px;cursor:pointer">
     <div class="item-head">
-      <img src="http://pic.topys.cn/uploads/20171225/1397993506.png?x-oss-process=style/article_list" alt=""> 
+      <img src="http://pic.topys.cn/uploads/20171225/1397993506.png?x-oss-process=style/article_list" alt="">
     </div>
     <div class="item-info">
       <div class="title">这块遭雷劈的广告牌，火了!</div>
       <div class="subtitle">{{title}}</div>
       <div class="show-list">
-       <div> 
+       <div>
         <span class="view-record">
           <img src="../assets/ic-browse.png" alt="">
         </span>
@@ -20,23 +20,23 @@
           <img src="../assets/ic-praise.png" alt="">
         </span>
          <span class="num">12</span>
-       </div>  
+       </div>
          <span class="view-record num author">
             by Billy
          </span>
       </div>
     </div>
-  </div>   
+  </div>
 </template>
 
 <script>
 export default {
   data(){
     return{
-      mes:123  
+      mes:123
     }
   },
-  methods(){
+  methods:{
 
   },
   created () {
@@ -51,7 +51,7 @@ export default {
 <style>
 p{
  margin: 0px;
- padding: 0px; 
+ padding: 0px;
 }
 .item-head{
   width: 342px;

@@ -1,5 +1,5 @@
-/* 
-*  整个项目共有的css 
+/*
+*  整个项目共有的css
 */
 body,p,li,ul{
     margin: 0px;
@@ -15,7 +15,7 @@ body,p,li,ul{
    z-index: 1000;
    background: #ffffff;
    opacity: 1;
-   border-bottom: 1px solid #ededed; 
+   border-bottom: 1px solid #ededed;
 }
 .head-content{
     width: 100%;
@@ -29,20 +29,22 @@ body,p,li,ul{
     display: inline-block;
     margin: -3px;
     height: 68px;
-    line-height: 66px; 
+    line-height: 66px;
     padding: 0px 20px;
     cursor: pointer;
     font-size: 16px;
 }
 .head-content-list{
    float: left;
+   width: 30%;
 }
 .head-content-list li:hover{
     border-bottom: 2px solid black;
 }
 
 .head-content-logo{
-    width: 600px;
+    /* width: 600px; */
+    width: 40%;
     height:66px;
     float: left;
     text-align: center;
@@ -57,7 +59,8 @@ body,p,li,ul{
     height: 60px;
 }
 .head-content-icon{
-    width: 220px;
+    /* width: 220px; */
+    width: 30%;
     height: 66px;
     box-sizing: border-box;
     float: left;
@@ -84,6 +87,27 @@ body,p,li,ul{
   margin-top:66px;
   width: 100%;
   min-height: 500px;
-  border: 1px solid black  
+  border: 1px solid black
 }
-
+.footer .copyright {
+    margin-top: 18px;
+    padding-top: 30px;
+    text-align: center;
+    padding-bottom: 30px;
+}
+.bd-line {
+    border-top: 1px solid #e2e2e2;
+}
+.al-c {
+    text-align: center;
+}
+.f-weight {
+    font-weight: 500;
+}
+.footer .copyright .links a {
+    color: #1d2129;
+    line-height: 17px;
+    margin-bottom: 7px;
+    padding: 0 7px;
+    display: inline-block;
+}
