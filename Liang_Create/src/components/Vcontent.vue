@@ -1,6 +1,7 @@
 <template>
-  <div class="hello">
+<div class="hello">
     <!-- <el-input v-model="input" placeholder="请输入内容"></el-input> -->
+   <v-head></v-head>  
    <div class="swiper"> 
     <el-carousel :interval="5000" arrow="always" height="580px">
       <el-carousel-item v-for="item in 4" :key="item">
@@ -16,13 +17,13 @@
       <v-item :title='msg'></v-item>
       <v-item :title='msg'></v-item>
       <v-item :title='msg'></v-item>
-
     </div>
   </div>   
-  </div>
+</div>
 </template>
 
 <script>
+import helper from '../js/helper'
 export default {
   name: "HelloWorld",
   data() {
@@ -30,6 +31,15 @@ export default {
       msg: "算是我见过的最酷的汽车广告牌了！",
       input:"123"
     };
+  },
+  methods:{
+     
+  },
+  created:function(){
+    console.log('进入了....')
+    helper.httpGet('http://192.168.232.1:3000/users').then(function(res){
+       console.log(res);
+    })
   }
 };
 </script>

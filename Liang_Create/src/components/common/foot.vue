@@ -13,5 +13,12 @@
   </div>
 </template>
 <script>
-
+export default{
+  name: "foot",
+  data(){
+    return{
+      mes:''
+    }
+  }
+}
 </script>
