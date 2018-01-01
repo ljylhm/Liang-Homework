@@ -1,25 +1,25 @@
 <template>
-  <div style="float:left;margin-right:30px;margin-bottom:30px;cursor:pointer">
+  <div style="float:left;margin-right:30px;margin-bottom:30px;cursor:pointer" @click="to">
     <div class="item-head">
-      <img src="http://pic.topys.cn/uploads/20171225/1397993506.png?x-oss-process=style/article_list" alt="">
+      <img :src= "info.titleimg" alt="">
     </div>
     <div class="item-info">
-      <div class="title">这块遭雷劈的广告牌，火了!</div>
-      <div class="subtitle">{{title}}</div>
+      <div class="title">{{info.title}}</div>
+      <div class="subtitle">{{info.subtitle}}</div>
       <div class="show-list">
        <div>
         <span class="view-record">
           <img src="../assets/ic-browse.png" alt="">
         </span>
-        <span class="num">1234</span>
+        <span class="num">{{info.viewnum}}</span>
         <span class="view-record">
           <img src="../assets/ic-comment.png" alt="">
         </span>
-         <span class="num">25</span>
+         <span class="num">{{info.conmentnum}}</span>
         <span class="view-record">
           <img src="../assets/ic-praise.png" alt="">
         </span>
-         <span class="num">12</span>
+         <span class="num">{{info.goodnum}}</span>
        </div>
          <span class="view-record num author">
             by Billy
@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import helper from '../js/helper'
 export default {
   data(){
     return{
@@ -37,13 +38,19 @@ export default {
     }
   },
   methods:{
-
+     to:function(){
+        helper.toRouter('/showArticle',{
+           id:this.info.articleid
+        })
+     }
   },
   created () {
-   console.log(this.title) // 空值
   },
   props:[
-    'title'
+    'info',
+    // 'title',
+    // 'subtitle',
+    // 'imgurl'
   ]
 }
 </script>
@@ -67,6 +74,12 @@ p{
 }
 .title{
   width: 100%;
+  height: 45px;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
   font-size: 18px;
   color:#202020;
   padding-top:20px;
@@ -75,6 +88,9 @@ p{
   width: 100%;
   color:#757779;
   padding-top:15px;
+  overflow: hidden;/*超出部分隐藏*/
+  white-space: nowrap;/*不换行*/
+  text-overflow:ellipsis;/*超出部分文字以...显示*/
   font-size: 12px;
 }
 .show-list{

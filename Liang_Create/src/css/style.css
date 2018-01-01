@@ -12,7 +12,7 @@ body,p,li,ul{
    top: 0px;
    box-sizing: border-box;
    padding:0px 245px 0px 245px;
-   z-index: 1000;
+   z-index: 10010;
    background: #ffffff;
    opacity: 1;
    border-bottom: 1px solid #ededed;
@@ -77,6 +77,7 @@ body,p,li,ul{
 }
 .icon-person{
     float: right;
+    position: relative;
     background: url('../assets/personal.png') no-repeat 50% center;
 }
 .icon-person:hover{
@@ -87,7 +88,6 @@ body,p,li,ul{
   margin-top:66px;
   width: 100%;
   min-height: 500px;
-  border: 1px solid black
 }
 .footer .copyright {
     margin-top: 18px;
@@ -110,4 +110,8 @@ body,p,li,ul{
     margin-bottom: 7px;
     padding: 0 7px;
     display: inline-block;
+}
+
+.input-small{
+    width: 66px;
 }

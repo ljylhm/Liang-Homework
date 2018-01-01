@@ -161,12 +161,12 @@
     </div>
    </div>
   </div>
-  <div id="load-data" class="load-data" style="">
+  <div id="load-data" style="padding:50px 0px 30px 0px">
      <a href="javascript:;" class="load-more f-weight">浏览更多</a>
-    </div>
-      </div>
-      <page-foot></page-foot>
   </div>
+  <v-foot></v-foot>
+ </div>
+</div>
 </div> 
 </template>
 

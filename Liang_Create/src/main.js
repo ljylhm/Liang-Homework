@@ -12,7 +12,7 @@ import router from './router'
 
 Vue.use(ElementUI)
 Vue.component('v-item',Vitem)
-Vue.component('page-foot',foot)
+Vue.component('v-foot',foot)
 Vue.component('v-head',Vhead)
 Vue.config.productionTip = false
 
