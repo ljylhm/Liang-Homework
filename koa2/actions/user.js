@@ -17,7 +17,6 @@ let queryUser = async (ctx, next) => {
 
 // 插入用户的信息 post
 let addUser = async (ctx, next) => {
-<<<<<<< HEAD
   let query = ctx.request.body,
       result;
   let user = new userEntity.user(query.nickName,query.sex,query.phone,query.email,query.password);
@@ -47,38 +46,6 @@ let addUser = async (ctx, next) => {
     } catch (error) {
       console.log(error);
       result = new userEntity.result(2002, "插入数据失败", null);
-=======
-    let query = ctx.request.body,
-        result;
-    let user = new userEntity.user(query.name, query.jobNum, query.openid, query.nickName, query.photo);
-    // 检测user中是否有空对象
-    let res = helper.detectIsEmpty(user);
-    if (!res.flag) {
-        let str = "缺少" + res.EmptyItem + "参数";
-        result = new userEntity.result(2001, str, null)
-    } else {
-        try {
-            // 默认插入用户的时候状态为存在状态 1存在 0不存在 创建时间默认为服务器当前时间 
-            // 并且返回插入用户的信息
-            let sqlRes_openid = await sql.query("select * from staff WHERE OpenId = ?", [user.openid]);
-            let isNew = sqlRes_openid ? true : false;
-            if (!isNew) {
-                result = new userEntity.result(2004, "该用户已存在", {
-                    isAdd: false
-                });
-            } else {
-                let sqlRes = await sql.query("insert into staff values (null,?,?,?,?,?,?,?)", [user.name, user.jobNum, user.openid, user.nickName, user.photo, 1, new Date()]);
-                let sqlLastRes = await sql.query("select * from staff order by Id DESC limit 1")
-                result = new userEntity.result(2000, "请求数据成功", {
-                    isAdd: true,
-                    newUserInfo: sqlLastRes[0]
-                });
-            }
-        } catch (error) {
-            console.log(error);
-            result = new userEntity.result(2002, "插入数据失败", null);
-        }
->>>>>>> 6acd559ac412e7f0c68cb621505827b3a17994f6
     }
   }
   return result;

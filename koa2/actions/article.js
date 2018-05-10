@@ -17,15 +17,22 @@ let queryArticle = async (ctx, next) => {
             result = sqlRes;
         } catch (error) {
             console.log(error);
-            result = new userEntity.result(2002, "插入数据失败", null); 
+            result = new articleEntity.result(2002, "插入数据失败", null); 
         }  
     }else{
         let str = "缺少参数";
-        result = new userEntity.result(2001, str, null);
+        result = new articleEntity.result(2001, str, null);
     }    
     //let article = new userEntity.article(query.title,query.subtitle,query.titleimg,query.content,query.userid);       
     return result; 
 };
+
+let addArticle = async(ctx, next) => {
+    let query = ctx.query,
+    result;
+    let article = new articleEntity.books(query.title, query.subtitle, query.titleimg, query.content, query.userid);
+    console.log("进入这里>>>>>");
+}
 
 module.exports = {
     queryArticle:queryArticle

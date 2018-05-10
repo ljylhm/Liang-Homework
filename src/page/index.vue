@@ -130,16 +130,12 @@
     },
     methods: {
       testFun: function () {
-        console.log(123);
       },
       showLoading() {
         this.isLoading = true;
       }
     },
     created: function () { // 这个时候进入组件 已经具有data属性
-      var arr = [1,2,0,23,23,100,45];
-      console.log(helper.arrSort1(arr,[],[]));
-    
     }
   }
 </script>

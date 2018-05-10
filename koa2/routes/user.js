@@ -9,13 +9,8 @@ let helper = require('../tool/helper');
 let useAct = require("../actions/user")
 
 // 添加用户
-<<<<<<< HEAD
 router.get('/addUser', async (ctx, next) => {
     let result = await useAct.queryUser(ctx, next)
-=======
-router.post('/addUser', async (ctx, next) => {
-    let result = await useAct.addUser(ctx, next);
->>>>>>> 6acd559ac412e7f0c68cb621505827b3a17994f6
     ctx.type = "json";
     ctx.body = result;
 })

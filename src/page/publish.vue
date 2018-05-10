@@ -108,7 +108,6 @@
         background-color: #fafafa;
         box-sizing: border-box;
         padding: 0px 100px;
-
     }
 
     .pub-ban-content {

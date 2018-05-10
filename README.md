@@ -2,6 +2,7 @@
 梁钧元的课程设计
 
 ![Alt text](https://img.shields.io/badge/version-node%3E%3D8.0-green.svg)
+![Alt text](https://img.shields.io/badge/vue-2.5.13-green.svg)
 
 ***
 ###5月10日

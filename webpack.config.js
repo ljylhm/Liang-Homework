@@ -4,7 +4,7 @@ module.exports = {
     entry: {
         index: "./src/index.js"
     },
-
+    devtool: "source-map",
     output: {
         path: path.resolve(__dirname, './dist'),
         publicPath: 'dist/',
@@ -24,7 +24,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                loader: 'style-loader!css-loader'
+                loader: 'style-loader!css-loader!less-loader'
             },
             {
                 test: /\.(png|jpg|gif|svg|eot|woff|woff2|ttf)$/,
@@ -53,6 +53,7 @@ module.exports = {
         host: '192.168.1.115',
         port: 8086,
         noInfo: false,
+        hot: true,
         proxy: {
             "/cube/**": {
                 target: "http://10.101.68.29:8081/",
