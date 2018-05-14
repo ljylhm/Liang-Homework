@@ -2,7 +2,8 @@ var path = require('path');
 var webpack = require('webpack');
 module.exports = {
     entry: {
-        index: "./src/index.js"
+        index: "./src/index.js",
+        login: "./src/login.js"
     },
     devtool: "source-map",
     output: {

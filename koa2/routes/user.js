@@ -9,15 +9,21 @@ let helper = require('../tool/helper');
 let useAct = require("../actions/user")
 
 // 添加用户
-router.get('/addUser', async (ctx, next) => {
+router.get('/queryUser', async (ctx, next) => {
     let result = await useAct.queryUser(ctx, next)
     ctx.type = "json";
     ctx.body = result;
 })
 
-// 是否新用户
-router.post('/isNewUser', async (ctx, next) => {
-    let result = await useAct.isNewUser(ctx, next);
+// 添加新用户
+router.post('/addUser', async (ctx, next) => {
+    let result = await useAct.addUser(ctx, next);
+    ctx.type = "json";
+    ctx.body = result;
+})
+
+router.post('/userLogin', async (ctx, next) => {
+    let result = await useAct.queryUsesItem(ctx, next);
     ctx.type = "json";
     ctx.body = result;
 })
@@ -41,7 +47,10 @@ router.post('/bookImg', async (ctx, next) => {
             console.log(JSON.stringify(files));
             console.log("fields");
             console.log(fields);
-            if (err) { throw err; return; }
+            if (err) {
+                throw err;
+                return;
+            }
             // 获取后缀名
             let extname = "";
             try {
@@ -85,7 +94,6 @@ router.post('/bookImg', async (ctx, next) => {
             } catch (error) {
                 throw error;
             }
-
         });
     })
 

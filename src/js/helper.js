@@ -1,22 +1,30 @@
 import axios from "@/axios";
-var router;
+import { Loading,Message,MessageBox  } from 'element-ui';
+let router;
+let loadingInstance = null;
 var helper = {
-  init: function(_router) {
+
+  config: {
+    localAddress: "http://192.168.1.115:3000/",
+    headimg: '//pic.topys.cn/Uploads/image/head.png',
+  },
+
+  init: function (_router) {
     router = _router;
   },
 
   // SessionStorage
-  sessionSet: function(name, value) {
+  sessionSet: function (name, value) {
     if (!this.argCheck(name, value)) return;
     sessionStorage.setItem(name, value);
   },
 
-  sessionGet: function(name) {
+  sessionGet: function (name) {
     if (!this.argCheck(name)) return window.sessionStorage;
     return sessionStorage.getItem(name);
   },
 
-  sessionClear: function(name) {
+  sessionClear: function (name) {
     var sessionJson = window.sessionStorage;
     if (!this.argCheck(name) && !this.isEmptyObject(sessionJson)) {
       sessionJson.clear();
@@ -25,31 +33,32 @@ var helper = {
   },
 
   // localStorage
-  localStroageSet: function(name, value) {
+  localStroageSet: function (name, value) {
     if (!this.argCheck(name, value)) return;
     localStorage.setItem(name, value);
   },
 
-  localStroageGet: function(name) {
+  localStroageGet: function (name) {
     if (!this.argCheck(name)) return window.localStorage;
-    localStorage.getItem(name);
+    return localStorage.getItem(name);
   },
 
-  localStroageClear: function(name) {
-    var localStroageJson = window.localStroage;
-    if (!this.argCheck(name) && !this.isEmptyObject(localStroageJson)) {
-      localStroageJson.clear();
+  localStroageClear: function (name) {
+    var localStorageJson = window.localStorage;
+    if (!this.argCheck(name)) {
+      localStorageJson.clear();
+      return;
     }
-    localStroageJson.removeItem(name);
+    localStorageJson.removeItem(name);
   },
 
   // 获取最近一个路由的path
-  lastPath: function() {
+  lastPath: function () {
     if (arguments.length > 0) this.sessionSet("lastRoutePath", arguments[0]);
   },
 
   // 获得字符串中某个字符的数量
-  getCharNum: function(str1, str2) {
+  getCharNum: function (str1, str2) {
     if (!str1 || !str2) {
       console.error("getCharNum params is not allowed undefined or null");
     }
@@ -63,7 +72,7 @@ var helper = {
   },
 
   // 清除数组中的重复项
-  clearRepeate: function(arr, callback) {
+  clearRepeate: function (arr, callback) {
     if (this.getDataType(arr) != "Array") {
       console.error("the type of arg must be Array!");
       return;
@@ -76,7 +85,7 @@ var helper = {
   },
 
   // 数组中如果是对象的话的去重
-  clearRepeateObj: function(arr, id, i, callback) {
+  clearRepeateObj: function (arr, id, i, callback) {
     if (this.getDataType(arr) != "Array") {
       console.error("the type of arg must be Array!");
       return;
@@ -93,7 +102,7 @@ var helper = {
       }
     }
 
-    repeateArr.forEach(function(vaule, index) {
+    repeateArr.forEach(function (vaule, index) {
       index == 0 ? arr.splice(vaule, 1) : arr.splice(vaule - 1, 1);
     });
 
@@ -123,7 +132,7 @@ var helper = {
   },
 
   // 检测是否为空对象
-  isEmptyObject: function(obj) {
+  isEmptyObject: function (obj) {
     for (var key in obj) {
       return false;
     }
@@ -131,7 +140,7 @@ var helper = {
   },
 
   // 数组深拷贝
-  deepClone: function(obj) {
+  deepClone: function (obj) {
     var type = typeof obj == "object";
     if (!type) return obj;
     else {
@@ -144,7 +153,7 @@ var helper = {
   },
 
   // 获取数据类型
-  getDataType: function(obj) {
+  getDataType: function (obj) {
     if (!obj) return;
     var _type = "",
       _type_str = "";
@@ -155,7 +164,7 @@ var helper = {
     return _type_str;
   },
   // 路由传值 args需要为json格式
-  routerGo: function(url, args) {
+  routerGo: function (url, args) {
     if (!url) return;
     if (!args) {
       router.push(url);
@@ -172,30 +181,30 @@ var helper = {
   },
 
   // 检测 argruments 是否存在且不为零
-  argCheck: function() {
+  argCheck: function () {
     if (this.isEmptyObject(arguments)) return false;
     for (var i in arguments) {
       if (!arguments[i] && arguments[i] != 0) {
-        console.error("name or value can not be null");
+        //console.warn("name or value can not be null");
         return false;
       }
     }
     return true;
   },
 
-  arrSort1: function(arr,left,right) {
-    if(arr.length < 2) return arr;
-    var _mid = arr.splice(0,1)[0];
+  arrSort1: function (arr, left, right) {
+    if (arr.length < 2) return arr;
+    var _mid = arr.splice(0, 1)[0];
 
-    arr.forEach(function(ele,index,arr){
-       if(ele < _mid) left.push(ele);
-       else right.push(ele);
+    arr.forEach(function (ele, index, arr) {
+      if (ele < _mid) left.push(ele);
+      else right.push(ele);
     })
 
-    return this.arrSort1(left,[],[]).concat([_mid],this.arrSort1(right,[],[]))
+    return this.arrSort1(left, [], []).concat([_mid], this.arrSort1(right, [], []))
   },
   // 获取时间戳
-  getTimeStamp: function(time) {
+  getTimeStamp: function (time) {
     if (!time) return Math.round(new Date().getTime() / 1000);
     else {
       if (this.getDataType(time) != "Date") {
@@ -205,7 +214,7 @@ var helper = {
     }
   },
 
-  http: function(url, method, data, opt) {
+  http: function (url, method, data, opt) {
     var met = method || "get",
       data = data || {},
       opt = opt || {
@@ -226,23 +235,61 @@ var helper = {
     return axios(params);
   },
 
-  httpGet: function(url, data, opt) {
+  httpGet: function (url, data, opt) {
     var method = "get";
     return this.http(url, method, data, opt);
   },
 
-  httpPost: function(url, data, opt) {
+  httpPost: function (url, data, opt) {
     var method = "post";
     return this.http(url, method, data, opt);
   },
 
-  httpAll: function(arr, callback) {
+  httpAll: function (arr, callback) {
     if (this.getDataType(arr) != "Array") {
       console.error("The params type is not right");
       return;
     }
     axios.all(arr).then(axios.spread(callback));
-  }
+  },
+
+  /****** loading方法 ******/
+  showLoading: function (opt) {
+    let defaultOpt = {
+      fullscreen: true,
+    }
+    opt = opt || {};
+    if (loadingInstance) return; // 这个时候有loading
+    let para = Object.assign(defaultOpt, opt);
+    loadingInstance = Loading.service(para);
+  },
+  closeLoading: function(){
+    if(loadingInstance) loadingInstance.close();
+  },
+
+  /* success error warning */
+  showMessage: function(message,type){
+    Message({
+      message: message || "",
+      center: true,
+      type: type || ""
+    })
+  },
+  showAlertMessage: function(str,info,para,cb){
+    MessageBox.confirm(str,info,para)
+    .then(()=>{
+       cb(true);
+    }).catch(()=>{
+       cb(false);
+    })
+  },
+  showAlertCommon: function(str,type,cb){
+     this.showAlertMessage(str,"提示",{
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: type
+     },cb)
+  } 
 };
 
 export default helper;

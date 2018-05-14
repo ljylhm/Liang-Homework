@@ -11,6 +11,10 @@ let router = require('./tool/dispenseRoutes');
 let helper = require('./tool/helper');
 let expand = require('./tool/expand') // 为js的原生对象添加一些方法
 
+const allowUrl = [
+    "http://192.168.1.115:8086"
+]
+
 // 启用静态资源
 app.use(serve(__dirname + "/public"));
 
@@ -25,12 +29,7 @@ app.use(async (ctx, next) => {
 app.use(cors({
     origin: function (ctx) {
         let origin = ctx.header.origin;
-        if (origin == "http://10.101.70.31:8080") return origin;
-        else if (origin == "http://10.101.70.31:8086") return origin;
-        else if (origin == "http://10.101.70.31:8081") return origin;
-        else if (origin == "http://10.101.70.67:8009") return origin;
-        else if (origin == "http://wx.17u.cn") return origin;
-        else if (origin == "https://wx.17u.cn") return origin;
+        if(allowUrl.includes(origin)) return origin;
         return false;
     }
 }));

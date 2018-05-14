@@ -136,6 +136,7 @@
       }
     },
     created: function () { // 这个时候进入组件 已经具有data属性
+        
     }
   }
 </script>

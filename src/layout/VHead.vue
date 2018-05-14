@@ -10,12 +10,17 @@
                         <el-input class="cr-item-1-input" placeholder="请输入内容" suffix-icon="el-icon-search" v-model="text"></el-input>
                     </div>
                     <div class="cr-item-user" @click="enter">
+                         <img :src="headimg || defaultHeadImg" alt="">
                         <div class="drop-down" v-show="isDrop">
-                            <div class="drop-down-list">个人中心</div>
+                            <div class="drop-down-list" @click="to('/personal')">个人中心</div>
                             <div class="drop-down-list">我的草稿</div>
                             <div class="drop-down-list">我的主页</div>
+                            <div class="drop-down-list" @click="out()">退出</div>
                         </div>
                     </div>
+                    <!-- <div class="cr-head-img">
+                        <img src="//pic.topys.cn/Uploads/image/head.png" alt="">
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -24,7 +29,6 @@
 
 <script>
     import helper from "@/helper";
-
     export default {
         data: function () {
             return {
@@ -44,31 +48,53 @@
                     }
                 ],
                 text:"",
-                isDrop: false
+                isDrop: false,
+                defaultHeadImg: helper.config.headimg
                 //channelList: ["发现", "有聊", "活动", "探索"]
             };
-        },
-        created: function () {
-
         },
         methods: {
             pageChange: function (router) {
                 helper.routerGo(router);
             },
             enter: function(){
+                if(!this.isOnline){
+                    this.$store.commit("loginDialog");
+                    return;
+                }
                 this.isDrop = !this.isDrop; 
             },
             leave: function(){
                 setTimeout(()=>{
                     this.isDrop = false; 
-                },1000)
-                
+                },1000)    
+            },
+            to:function(item){
+               item = item || '/index';
+               helper.routerGo(item);
+            },
+            out:function(){ // 退出
+                helper.showAlertCommon('是否要退出','warning',(flag)=>{
+                    if(!flag) return;
+                    this.$store.commit("changeStatus");
+                    this.$store.commit("changeUserInfo",{});
+                    helper.localStroageClear('user');
+                    helper.routerGo('/index');
+                })
             }
+        },
+        computed:{
+           isOnline:function(){
+               return this.$store.state.userInfo.status;
+           },
+           headimg:function(){
+               return this.$store.state.userInfo.info.headimg;
+           }
         }
     };
 </script>
 
-<style>
+<style lang="less">
     .container-head {
         width: 100%;
         height: 84px;
@@ -137,30 +163,44 @@
     .cr-item-user{
         width: 30px;
         height: 30px;
-        float: left;
         position: absolute;
         top: 50%;
         left: 170px;
         margin-top: -10px;
         cursor: pointer;
-        background: url("http://www.topys.cn/Public/home/img/icon/ic-user.png") no-repeat;
-        background-position-y: 0% ;
-        background-size: 30px;
+        & img{
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
     }
 
-    .cr-item-user:hover{
-        background: url("http://www.topys.cn/Public/home/img/icon/ic-user.png") no-repeat;
-        background-position-y: 100%;
-        background-size: 30px;
+    // .cr-item-user:hover{
+    //     background: url("http://www.topys.cn/Public/home/img/icon/ic-user.png") no-repeat;
+    //     background-position-y: 100%;
+    //     background-size: 30px;
+    // }
+
+    .cr-head-img{
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 50%;
+        left: 220px;
+        margin-top: -20px;
+        cursor: pointer;
+        & img{
+            width: 100%;
+            height: 100%;
+        }
     }
 
     .drop-down{
         position: relative;
-        top: 52px;
         background: #fff;
-        left: -44px;
-        width: 110px;
-        height: 200px; 
+        left: -34px;
+        width: 100px;
+        height: 130px; 
     }
 
     .drop-down-list{
@@ -174,4 +214,6 @@
     .drop-down-list:hover{
         color: #000; 
     }
+
+
 </style>

@@ -12,6 +12,7 @@ import VDisplay from './layout/VDisplay';
 import './layout/ref';
 import '@dir/dir'
 import $ from 'jquery';
+import store from "./js/store"
 
 
 Vue.component(CollapseTransition.name, CollapseTransition);
@@ -21,7 +22,8 @@ Vue.use(ElementUI);
 
 helper.init(router);
 helper.routerGo('/index');
-
+// helper.localStroageSet("ssss",123321);
+helper.localStroageClear();
 var getSize = () => {
     return {
         "_menu_height": window.innerHeight - $('#head').height(),
@@ -46,7 +48,6 @@ var resizeRouterView = () => {
         "box-sizing": "border-box"
     });
 }
-
 const app = new Vue({
     el: '#app',
     data: function () {
@@ -56,13 +57,17 @@ const app = new Vue({
     },
     methods:{
         dialogClose:function(){
-            console.log("打开关闭函数......");
             this.dialogVisiable = false;
         }
     },
     created:function(){
        var lastPath = helper.sessionGet('lastPath') ||　'/index';
        helper.routerGo(lastPath);
+       var user = helper.localStroageGet('user') || null;
+       if(user) {
+           this.$store.commit("changeStatus");
+           this.$store.commit("changeUserInfo",JSON.parse(user));
+       }
     },
     mounted: function () {
         // resizeSquare();
@@ -72,11 +77,21 @@ const app = new Vue({
         //     resizeRouterView();
         // }
     },
+    store, // 引入仓库
     router: router
 })
 
 // 路由守卫 进入路由前校验
 router.beforeEach((to,from,next)=>{
+    if(to.path == "/personal") { // 个人中心的路由限制
+        if(!helper.localStroageGet('user')){
+            helper.showMessage('请先登录',"warning");
+            setTimeout(()=>{
+                store.commit("loginDialog");
+            },2000)
+            return;
+        }
+    }
     next();
 })
 
