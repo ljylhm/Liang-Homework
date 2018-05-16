@@ -1,6 +1,7 @@
 <template>
   <div class="personal-container">
        <!-- 前部 -->
+       
        <div class="front">
             <div class="front-content">
                 <div class="front-show-box-1">编辑资料</div>
@@ -10,6 +11,7 @@
 
        <div class="pl-main">
               <!-- 菜单栏 -->
+          
               <div class="pl-main-list" @click="choose">
                   <div data-index="1"  :class="{ 'select-choose':index == 1,'pl-main-list-item':true }">账号信息</div>
                   <div data-index="2"  :class="{ 'select-choose':index == 2,'pl-main-list-item':true }">更改密码</div>
@@ -36,8 +38,13 @@
                            <el-form-item label="邮箱：">
                                 <el-input v-model="countForm.email" ></el-input>
                            </el-form-item>
+                          <el-form-item label="性别：">
+                                <el-radio v-model="countForm.sex" label="1">我是男的</el-radio>
+                                <el-radio v-model="countForm.sex" label="2">我是女的</el-radio>
+                          </el-form-item>
+                          </br>
                           <el-form-item label="头像：">
-                              <el-upload action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false">
+                              <el-upload action="http://192.168.1.115:3000/user/upLoadImg" :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
                                   <div class="head-img">
                                      <img :src="countForm.headimg">
                                   </div>
@@ -75,10 +82,10 @@
 <script>
 import toggleLabel from "../components/toggleLabel.vue"
 import helper from "../js/helper"
+var uploadAddress = "user/upLoadImg"
 export default {
   data () {
     return {
-      message:"welcome to personal.vue",
       userInfo: null,
       index: 1,
       ageArr:[],
@@ -91,7 +98,8 @@ export default {
         name: "Billy",
         age: 22,
         phone: "15850225218",
-        email: "948021695@qq.com"
+        email: "948021695@qq.com",
+        sex: "男"
       }
     };
   },
@@ -102,6 +110,14 @@ export default {
     choose:function(e){
       var index = e.target.getAttribute("data-index");
       this.index = index || 1;
+    },
+    handleAvatarSuccess:function(res, file){ // 图片上传成功以后的回调
+      console.log(res);
+      console.log(file);
+      this.countForm.headimg = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload:function(file){
+       console.log(file);
     }
   },
   components:{
@@ -243,6 +259,7 @@ export default {
 .head-img{
   width: 100px;
   height: 100px;
+  cursor: pointer;
 }
 .head-img img{
   width: 100%;

@@ -14,12 +14,13 @@ let article = function(title,subtitle,titleimg,content,userid){
 }
 
 // 借阅人信息的对应实体
-let user = function(nickname,sex,phone,email,password,imgurl){
+let user = function(nickname,sex,phone,email,password,headimg){
     this.nickname = nickname || null;
     this.sex = sex || null;
     this.phone = phone || null;
     this.email = email || null;
     this.password = password || null;
+    this.headimg = headimg || null; 
 }
 
 // 书籍信息对应的实体
@@ -44,6 +45,7 @@ let borrowRecords = function(bookId,staffId,refid,remark,clientIp,openid){
     this.clientIp = clientIp || null;
     this.openid = openid || null;
 }
+
 
 module.exports = {
     result:result,

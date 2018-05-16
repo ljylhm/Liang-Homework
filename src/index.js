@@ -22,8 +22,6 @@ Vue.use(ElementUI);
 
 helper.init(router);
 helper.routerGo('/index');
-// helper.localStroageSet("ssss",123321);
-helper.localStroageClear();
 var getSize = () => {
     return {
         "_menu_height": window.innerHeight - $('#head').height(),

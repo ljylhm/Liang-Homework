@@ -15,6 +15,13 @@ router.get('/queryUser', async (ctx, next) => {
     ctx.body = result;
 })
 
+// 验证手机号码
+router.get("/isNew", async (ctx, next) => {
+    let result = await useAct.isNew(ctx, next)
+    ctx.type = "json";
+    ctx.body = result;
+})
+
 // 添加新用户
 router.post('/addUser', async (ctx, next) => {
     let result = await useAct.addUser(ctx, next);
@@ -110,28 +117,37 @@ router.post("/upLoadImg", async (ctx, next) => {
         result = {
             name: "Billy"
         };
-
     let name = query.files.file.name;
+    console.log(query);
     let readStream = fs.createReadStream(query.files.file.path); // 这个path 不造是前端的地址传到后台的地址
-
-    let fn = await helper.upLoadQiNiu({
+    let para = {
         name: name,
         stream: readStream
-    })
-
-    readStream.close(); // 关闭可读流读取
-
-    if (fn.err) {
-        throw err;
-        result = new userEntity.result(2002, "插入数据失败", null)
-    } else if (fn.info.statusCode == 200) {
-        result = new userEntity.result(2000, "请求数据成功", {
-            imgUrl: "http://p3s00of2j.bkt.clouddn.com/" + fn.body.key
-        })
     }
+    let fn = new Promise((resolve) => {
+        helper.upLoadQiNiu(para, (respErr, respBody, respInfo) => {
+            if (respErr) {
+                throw respErr;
+                result = new userEntity.result(2002, "上传失败", null)
+                resolve(result);
+            }
+            if (respInfo.statusCode == 200) {
+                console.log(respInfo);
+                result = new userEntity.result(2000, "请求数据成功", {
+                    imgUrl: "http://p3s00of2j.bkt.clouddn.com/" + respInfo.data.key
+                });
+                resolve(result);
+            } else {
+                result = new userEntity.result(2002, "未知原因上传失败", null);
+                resolve(result)
+            }
+            readStream.close(); // 关闭可读流读取
+        })
+    })
+    let data = await fn;
 
     ctx.type = "json";
-    ctx.body = result;
+    ctx.body = data;
 })
 
 module.exports = router;

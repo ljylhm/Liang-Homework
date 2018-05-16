@@ -34,8 +34,8 @@ app.use(cors({
     }
 }));
 
-app.use(bodyParser());
-//app.use(koaBody())
+//app.use(bodyParser());
+app.use(koaBody({multipart: true}))
 
 app.use(router.routes())
     .use(router.allowedMethods())

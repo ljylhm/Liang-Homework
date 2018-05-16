@@ -224,14 +224,21 @@ var helper = {
       };
     if (!url) console.error("not found url.....");
 
-    var params = {
+    var params1 = {
       url: url,
       method: method,
       data: data,
       timeout: 2000
     };
 
-    params = Object.assign(params, opt);
+    var params2 = {
+      url: url,
+      method: method,
+      params: data,
+      timeout: 2000
+    }
+
+    var params = method == "get" ? Object.assign(params2, opt) : Object.assign(params1, opt)
     return axios(params);
   },
 

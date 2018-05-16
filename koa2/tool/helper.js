@@ -94,29 +94,29 @@ let helper = {
     },
 
     // 上传到七牛云
-    upLoadQiNiu: function (opt) {
-
-        let localFile = path.resolve(__dirname, "../public/img/1522650964.jpg");
+    upLoadQiNiu: function (opt,cb) {
 
         let config = new qiniu.conf.Config();
         config.zone = opt.zone || qiniu.zone.Zone_z0; // 默认华东的区域
         let putExtra = new qiniu.form_up.PutExtra();
         let key = opt.name;
         let token = this.qiuNiuOpt();
-
         let formUploader = new qiniu.form_up.FormUploader(config);
-
-        formUploader.putStream(token, key, opt.stream, putExtra, function (respErr, respBody, respInfo) {
-            if (respErr) {
-                throw respErr;
-            }
-            if (respInfo.statusCode == 200) {
-                console.log(respBody);
-            } else {
-                console.log(respInfo.statusCode);
-                console.log(respBody);
-            }
-        })
+        formUploader.putStream(token, key, opt.stream, putExtra,cb);
+        // formUploader.putStream(token, key, opt.stream, putExtra, function (respErr, respBody, respInfo) {
+        //     if (respErr) {
+        //         console.log("errr");
+        //         console.log(respErr);
+        //         throw respErr;
+        //     }
+        //     if (respInfo.statusCode == 200) {
+        //         console.log("body"+respBody);
+        //         console.log("info"+respInfo);
+        //         return respBody;
+        //     } else {
+        //         return respBody;
+        //     }
+        // })
     },
 }
 

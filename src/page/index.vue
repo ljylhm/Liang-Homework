@@ -12,6 +12,7 @@
     </div>
 
     <!-- 导航条部分 -->
+    
     <div class="show-area-til">
       最新精选
     </div>
@@ -136,7 +137,6 @@
       }
     },
     created: function () { // 这个时候进入组件 已经具有data属性
-        
     }
   }
 </script>
