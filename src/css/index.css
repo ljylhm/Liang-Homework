@@ -9,8 +9,7 @@ body {
     padding: 0px;
 }
 
-label,
-p {
+label{
     margin: 0px;
     padding: 0px;
 }
@@ -55,10 +54,11 @@ p {
     height: auto;
 }
 
-.container{
+.container {
     width: 100%;
     height: auto;
 }
+
 /**功能性css**/
 
 .font-pos-center {
@@ -135,6 +135,97 @@ p {
     overflow: hidden;
 }
 
+.list-item {
+    width: 335px;
+    height: 444px;
+    margin-bottom: 50px;
+}
+
+.list-up {
+    width: 100%;
+    height: 410px;
+    border-bottom: 1px solid #EDEEEE;
+}
+
+.list-down {
+    width: 100%;
+    height: 40px;
+}
+
+.list-img {
+    width: 100%;
+    height: 260px;
+}
+
+.list-img img {
+    width: 100%;
+    height: 100%;
+}
+
+.list-type {
+    width: 100%;
+    height: 34px;
+    font-size: 12px;
+    color: #828686;
+    line-height: 34px;
+}
+
+.list-title {
+    width: 100%;
+    height: auto;
+    font-size: 18px;
+    line-height: 24px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+}
+
+.list-desc {
+    width: 100%;
+    box-sizing: border-box;
+    padding-top: 10px;
+    font-size: 12px;
+    color: #828686;
+}
+
+.list-count {
+    width: 40px;
+    height: 100%;
+    float: left;
+}
+
+.list-count-font {
+    width: 20px;
+    height: 100%;
+    line-height: 38px;
+    font-size: 12px;
+    float: left;
+    color: #A5A7AA;
+}
+
+.list-author {
+    width: 100px;
+    height: 100%;
+    text-align: right;
+    float: right;
+}
+
+.view {
+    background: url("../../assest/img/ic-browse.png") no-repeat center 3px;
+    background-size: 60% 60%;
+}
+
+.comment {
+    background: url("../../assest/img/ic-comment.png") no-repeat center 3px;
+    background-size: 60% 60%;
+}
+
+.praise {
+    background: url("../../assest/img/ic-praise.png") no-repeat center 3px;
+    background-size: 60% 60%;
+}
+
 .topic {
     width: 100%;
     height: 280px;
@@ -177,7 +268,8 @@ p {
     background: #fff;
     color: #000;
 }
-.main-btn{
+
+.main-btn {
     width: 160px;
     height: 40px;
     line-height: 40px;
@@ -185,7 +277,8 @@ p {
     border: 1px solid #000;
     cursor: pointer;
 }
-.main-btn:hover{
+
+.main-btn:hover {
     background-color: #000;
     color: #fff;
 }
@@ -341,10 +434,12 @@ p {
 }
 
 /****** 分页组件的样式 ******/
-.pageMation{
+
+.pageMation {
     width: auto;
     float: right;
     margin-top: 20px;
     height: 32px;
 }
+
 /****** 改wangEditor的样式 ******/

@@ -44,7 +44,7 @@
                           </el-form-item>
                           </br>
                           <el-form-item label="头像：">
-                              <el-upload action="http://192.168.1.115:3000/user/upLoadImg" :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
+                              <el-upload action="http://10.15.89.81:3000/user/upLoadImg" :show-file-list="false" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
                                   <div class="head-img">
                                      <img :src="countForm.headimg">
                                   </div>
@@ -130,7 +130,6 @@ export default {
   },
   mounted:function(){
     this.countForm = this.$store.state.userInfo.info;
-    console.log(this.$store.state.userInfo.info);
   }
 }
 

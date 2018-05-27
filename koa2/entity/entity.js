@@ -46,11 +46,22 @@ let borrowRecords = function(bookId,staffId,refid,remark,clientIp,openid){
     this.openid = openid || null;
 }
 
+// 评论对应的实体
+let comment = function(commentid,artid,userid,content,creatAt,refid,goodnum){
+    this.commentid = commentid || null;
+    this.artid = artid || null;
+    this.userid = userid || null;
+    this.content = content || null;
+    this.creatAt = creatAt || null;
+    this.refid = refid || null;
+    this.goodnum = goodnum || null;
+}
 
 module.exports = {
     result:result,
     user:user,
     books:books,
     borrowRecords:borrowRecords,
-    article:article
+    article:article,
+    comment:comment
 }

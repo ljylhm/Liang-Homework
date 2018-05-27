@@ -19,5 +19,6 @@ axios.interceptors.response.use((response) => {
     return data;
 })
 
+axios.defaults.timeout = 2000;
 
 export default axios;

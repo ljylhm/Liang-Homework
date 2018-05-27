@@ -96,5 +96,5 @@ router.beforeEach((to,from,next)=>{
 // 离开路由时
 router.afterEach((to,from,next) => {
     // 路由刷新时进入当前route
-    helper.sessionSet('lastPath',to.path);
+    helper.sessionSet('lastPath',to.fullPath);
 })

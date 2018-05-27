@@ -190,14 +190,12 @@ export default {
         .then((data)=>{
            let code = data.code,
                result = data.result;
-               console.log(result);
            if(code == 2000){ // 成功
                 this.dialogClose();
                 this.$store.commit("changeStatus");
                 this.$store.commit("changeUserInfo",result.userInfo); 
                 helper.localStroageSet("user",JSON.stringify(result.userInfo));
                 helper.showMessage("登录成功","success");
-                console.log(this.$store.userInfo);
            }
         })
       })

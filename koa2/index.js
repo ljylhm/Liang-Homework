@@ -12,7 +12,7 @@ let helper = require('./tool/helper');
 let expand = require('./tool/expand') // 为js的原生对象添加一些方法
 
 const allowUrl = [
-    "http://192.168.1.115:8086"
+    "http://10.15.89.81:8086"
 ]
 
 // 启用静态资源

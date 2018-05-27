@@ -40,11 +40,11 @@ let isNew = async (ctx, next) => {
   return result;
 }
 
-let queryUsesItem = async (ctx, next) => { // 校验用户信息
+let queryUserItem = async (ctx, next) => { // 校验用户信息
   let query = ctx.request.body,
     result;
   let name = query.phonenum,
-    password = query.pas;
+    password = query.pas; 
   if (!name || !password) {
     let str = "缺少参数";
     result = new userEntity.result(2001, str, null);
@@ -63,6 +63,7 @@ let queryUsesItem = async (ctx, next) => { // 校验用户信息
         });
       }
     } catch (error) {
+      console.log(error);
       result = new userEntity.result(2002, "查询发生错误", null);
     }
   }
@@ -96,7 +97,7 @@ let addUser = async (ctx, next) => {
 
 module.exports = {
   addUser: addUser,
-  queryUsesItem: queryUsesItem,
+  queryUserItem: queryUserItem,
   queryUser: queryUser,
   isNew: isNew
 };

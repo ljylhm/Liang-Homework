@@ -12,31 +12,32 @@
     </div>
 
     <!-- 导航条部分 -->
-    
+
     <div class="show-area-til">
       最新精选
     </div>
 
     <!-- 列表展示 -->
     <div class="list-show-container">
-      <div class="list-item" v-for="item in 6" :key="item">
+      <div class="list-item" v-for="(item,index) in latestList" :key="index">
         <div class="list-up">
-          <div class="list-img">
-            <img src="http://pic.topys.cn/uploads/20180331/1781977170.jpg?x-oss-process=style/article_list" alt="">
+          <div class="list-img" @click="getDetail(1,item.artid)">
+            <div class="list-img-float"></div>
+            <img :src=item.titleimg alt="">
           </div>
           <div class="list-type">好广告</div>
-          <div class="list-title">咋办！一向被我们嘲笑的日韩人民英语讲得都比咱好了</div>
-          <div class="list-desc">这样的Chinglish不被吊打才怪。</div>
+          <div class="list-title">{{item.title}}</div>
+          <div class="list-desc">{{item.subtitle}}</div>
         </div>
         <div class="list-down">
           <div class="list-count view"></div>
-          <div class="list-count-font">123</div>
+          <div class="list-count-font">{{item.viewnum}}</div>
           <div class="list-count comment"></div>
-          <div class="list-count-font">123</div>
+          <div class="list-count-font">{{item.comnum}}</div>
           <div class="list-count praise"></div>
-          <div class="list-count-font">123</div>
+          <div class="list-count-font">{{item.goodnum}}</div>
           <div class="list-author list-count-font">by
-            <span>秋小叶</span>
+            <span>{{item.nickname}}</span>
           </div>
         </div>
       </div>
@@ -115,139 +116,161 @@
 </template>
 
 <script>
-  import helper from "@/helper";
-  // 首页的vue
-  export default {
-    data() {
-      return {
-        isLoading: false,
-        message: "welcome to index.vue",
-        scrollImg: ["http://pic.topys.cn/uploads/20180227/1483325017.png",
-          "http://pic.topys.cn/uploads/20180123/220215725.png",
-          "http://pic.topys.cn/uploads/20180327/1355392551.png",
-          "http://pic.topys.cn/uploads/20180326/739536397.png"
-        ]
-      };
+import helper from "@/helper";
+import config from "@/config";
+// 首页的vue
+let queryArticle = config.Api.localAddress + "article/queryArticle";
+export default {
+  data() {
+    return {
+      isLoading: false,
+      latestList: [],
+      hotestList: [],
+      message: "welcome to index.vue",
+      scrollImg: [
+        "http://pic.topys.cn/uploads/20180227/1483325017.png",
+        "http://pic.topys.cn/uploads/20180123/220215725.png",
+        "http://pic.topys.cn/uploads/20180327/1355392551.png",
+        "http://pic.topys.cn/uploads/20180326/739536397.png"
+      ]
+    };
+  },
+  methods: {
+    testFun: function() {},
+    showLoading() {
+      this.isLoading = true;
     },
-    methods: {
-      testFun: function () {
-      },
-      showLoading() {
-        this.isLoading = true;
+    getDetail(type,artid){
+      type = type || 1;
+      switch(type){
+        case 1: helper.routerGo("read",{
+          type:1,
+          id:artid
+        })
       }
-    },
-    created: function () { // 这个时候进入组件 已经具有data属性
+    }
+  },
+  created: function() {
+    // 这个时候进入组件 已经具有data属性
+    let para = {
+      page: 1,
+      limit: 10
+    };
+    helper.httpGet(queryArticle, para).then(data => {
+      if (data.code != 2000) return;
+      this.latestList = data.result.slice(0, 6);
+      this.hotestList = data.result.slice(6);
+      console.log(this.latestList);
+    });
+  }
+};
+</script>
+<style lang="less" scoped>
+.index-container {
+  width: 100%;
+  height: 1000px;
+}
+.show-area-til {
+  width: 100%;
+  height: 125px;
+  line-height: 125px;
+  color: #202020;
+  font-size: 22px;
+  text-align: center;
+}
+
+.list-item {
+  width: 335px;
+  height: 444px;
+  margin-bottom: 50px;
+}
+
+.list-up {
+  width: 100%;
+  height: 410px;
+  border-bottom: 1px solid #edeeee;
+}
+
+.list-down {
+  width: 100%;
+  height: 40px;
+}
+
+.list-img {
+  width: 100%;
+  height: 260px;
+  position: relative;
+  & div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0px;
+    &:hover {
+      background: #3333334a;
+      cursor: pointer;
     }
   }
-</script>
-<style scoped>
-  .index-container {
-    width: 100%;
-    height: 1000px;
-  }
-  .show-area-til {
-    width: 100%;
-    height: 125px;
-    line-height: 125px;
-    color: #202020;
-    font-size: 22px;
-    text-align: center;
-  }
+}
+// .list-img:hover{
+//     cursor: pointer;
 
-  .list-item {
-    width: 335px;
-    height: 444px;
-    margin-bottom: 50px;
-  }
+//     opacity: 0.5;
+// }
 
-  .list-up {
-    width: 100%;
-    height: 410px;
-    border-bottom: 1px solid #EDEEEE;
-  }
+.list-img img {
+  width: 100%;
+  height: 100%;
+}
 
-  .list-down {
-    width: 100%;
-    height: 40px;
-  }
+.list-type {
+  width: 100%;
+  height: 34px;
+  font-size: 12px;
+  color: #828686;
+  line-height: 34px;
+}
 
-  .list-img {
-    width: 100%;
-    height: 260px;
-  }
+.list-title {
+  width: 100%;
+  height: auto;
+  font-size: 18px;
+  line-height: 24px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
 
-  .list-img img {
-    width: 100%;
-    height: 100%;
-  }
+.list-desc {
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 10px;
+  font-size: 12px;
+  color: #828686;
+}
 
-  .list-type {
-    width: 100%;
-    height: 34px;
-    font-size: 12px;
-    color: #828686;
-    line-height: 34px;
-  }
+.list-count {
+  width: 40px;
+  height: 100%;
+  float: left;
+}
 
-  .list-title {
-    width: 100%;
-    height: auto;
-    font-size: 18px;
-    line-height: 24px;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-  }
+.list-count-font {
+  width: 20px;
+  height: 100%;
+  line-height: 38px;
+  font-size: 12px;
+  float: left;
+  color: #a5a7aa;
+}
 
-  .list-desc {
-    width: 100%;
-    box-sizing: border-box;
-    padding-top: 10px;
-    font-size: 12px;
-    color: #828686;
-  }
-
-  .list-count {
-    width: 40px;
-    height: 100%;
-    float: left;
-  }
-
-  .list-count-font {
-    width: 20px;
-    height: 100%;
-    line-height: 38px;
-    font-size: 12px;
-    float: left;
-    color: #A5A7AA;
-  }
-
-  .list-author {
-    width: 100px;
-    height: 100%;
-    text-align: right;
-    float: right;
-  }
-
-  .view {
-    background: url("../../assest/img/ic-browse.png") no-repeat center 3px;
-    background-size: 60% 60%;
-  }
-
-  .comment {
-    background: url("../../assest/img/ic-comment.png") no-repeat center 3px;
-    background-size: 60% 60%;
-  }
-
-  .praise {
-    background: url("../../assest/img/ic-praise.png") no-repeat center 3px;
-    background-size: 60% 60%;
-  }
-
-  .index-loading{
-     margin-top: -30px;
-  }
-
-  
+.list-author {
+  width: auto;
+  height: 100%;
+  text-align: right;
+  float: right;
+}
+.index-loading {
+  margin-top: -30px;
+}
 </style>

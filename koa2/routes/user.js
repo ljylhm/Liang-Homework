@@ -8,7 +8,6 @@ const guid = require("../tool/guid")
 let helper = require('../tool/helper');
 let useAct = require("../actions/user")
 
-// 添加用户
 router.get('/queryUser', async (ctx, next) => {
     let result = await useAct.queryUser(ctx, next)
     ctx.type = "json";
@@ -30,7 +29,7 @@ router.post('/addUser', async (ctx, next) => {
 })
 
 router.post('/userLogin', async (ctx, next) => {
-    let result = await useAct.queryUsesItem(ctx, next);
+    let result = await useAct.queryUserItem(ctx, next);
     ctx.type = "json";
     ctx.body = result;
 })

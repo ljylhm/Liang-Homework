@@ -15,8 +15,8 @@ function importAll(r) {
         j = k.substring(index+1);
         routes.push({
             path: j,
+            name: j.substring(1),
             component: require('./page'+j+'.vue'),
-            name:require('./page'+j+'.vue').getName 
         })
     });
 }

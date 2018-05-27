@@ -1,5 +1,4 @@
 const router = require("koa-router")();
-const userEntity = require("../entity/entity");
 
 let helper = require("../tool/helper");
 let articleAct = require("../actions/article");
@@ -15,5 +14,12 @@ router.post("/addArticle", async (ctx, next) => {
   ctx.type = "json";
   ctx.body = result;
 });
+
+router.get("/queryArticleById", async (ctx, next) => {
+  let result = await articleAct.queryArticleById(ctx, next);
+  ctx.type = "json";
+  ctx.body = result;
+});
+
 
 module.exports = router;

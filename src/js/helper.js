@@ -1,11 +1,15 @@
 import axios from "@/axios";
-import { Loading,Message,MessageBox  } from 'element-ui';
+import {
+  Loading,
+  Message,
+  MessageBox
+} from 'element-ui';
 let router;
 let loadingInstance = null;
 var helper = {
 
   config: {
-    localAddress: "http://192.168.1.115:3000/",
+    localAddress: "http://10.15.89.81:3000/",
     headimg: '//pic.topys.cn/Uploads/image/head.png',
   },
 
@@ -139,6 +143,22 @@ var helper = {
     return true;
   },
 
+  // 检测对象为空的属性
+  detectEmptyObj: function (obj) {
+    let getObj = {
+      emptyItem: null,
+      flag: true
+    }
+    for (var i in obj) {
+      if (!obj[i] && obj[i] !== 0) {
+        getObj.emptyItem = i;
+        getObj.flag = false
+        break;
+      }
+    }
+    return getObj;
+  },
+
   // 数组深拷贝
   deepClone: function (obj) {
     var type = typeof obj == "object";
@@ -173,9 +193,10 @@ var helper = {
     if (this.getDataType(args) != "Object") {
       console.error("type of args must be json......");
     } else {
+      console.log(url);
       router.push({
-        path: url,
-        params: args
+        name: url,
+        query: args
       });
     }
   },
@@ -270,33 +291,33 @@ var helper = {
     let para = Object.assign(defaultOpt, opt);
     loadingInstance = Loading.service(para);
   },
-  closeLoading: function(){
-    if(loadingInstance) loadingInstance.close();
+  closeLoading: function () {
+    if (loadingInstance) loadingInstance.close();
   },
 
   /* success error warning */
-  showMessage: function(message,type){
+  showMessage: function (message, type) {
     Message({
       message: message || "",
       center: true,
       type: type || ""
     })
   },
-  showAlertMessage: function(str,info,para,cb){
-    MessageBox.confirm(str,info,para)
-    .then(()=>{
-       cb(true);
-    }).catch(()=>{
-       cb(false);
-    })
+  showAlertMessage: function (str, info, para, cb) {
+    MessageBox.confirm(str, info, para)
+      .then(() => {
+        cb(true);
+      }).catch(() => {
+        cb(false);
+      })
   },
-  showAlertCommon: function(str,type,cb){
-     this.showAlertMessage(str,"提示",{
+  showAlertCommon: function (str, type, cb) {
+    this.showAlertMessage(str, "提示", {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
       type: type
-     },cb)
-  } 
+    }, cb)
+  }
 };
 
 export default helper;
