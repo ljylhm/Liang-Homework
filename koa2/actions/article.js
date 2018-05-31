@@ -13,7 +13,7 @@ let queryArticle = async (ctx, next) => {
         let start = (page-1) * limit,
             end = page * limit;
         try {
-            let sqlRes = await sql.query("select a.artid,a.title,a.subtitle,a.titleimg,a.goodnum,a.viewnum,a.comnum,u.nickname from article as a inner JOIN user as u on  a.userid = u.userid limit ?,?",[start,end]);
+            let sqlRes = await sql.query("select a.artid,a.title,a.subtitle,a.titleimg,a.goodnum,a.viewnum,a.comnum,u.nickname from article as a inner JOIN user as u on a.userid = u.userid order by a.artid desc limit ?,?",[start,end]);
             result = new articleEntity.result(2000, "查询成功", sqlRes);
         } catch (error) {
             console.log(error);
@@ -34,6 +34,7 @@ let queryArticleById = async (ctx, next) => {
     if(id && id!=0){
         try {
             let sqlRes = await sql.query("SELECT * from article WHERE artid = ?",[id]);
+            let update = await sql.query("UPDATE article set viewnum = viewnum + 1 where artid = ?",[id]);
             result = new articleEntity.result(2000, "查询成功", sqlRes[0]);
         } catch (error) {
             console.log(error);
@@ -49,8 +50,7 @@ let queryArticleById = async (ctx, next) => {
 
 let addArticle = async(ctx, next) => {
     let query = ctx.request.body,
-        result;
-    console.log(query);    
+        result;  
     let article = new articleEntity.article(query.title, query.subtitle, query.titleimg, query.content, query.userid,query.theme,query.tag);
     if (!helper.detectIsEmpty(article).flag) {
         let str = "缺少" + helper.detectIsEmpty(article).EmptyItem + "参数";
@@ -68,6 +68,12 @@ let addArticle = async(ctx, next) => {
         }
     }
     return result;
+}
+
+let vagueSerach = async(ctx, next) => { // 模糊查询
+    let query = ctx.request.body,
+        result;
+    let queryRes = await sql.query("SELECT * from article where content like ?",[query.key]);
 }
 
 module.exports = {

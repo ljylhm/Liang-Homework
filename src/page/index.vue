@@ -25,7 +25,7 @@
             <div class="list-img-float"></div>
             <img :src=item.titleimg alt="">
           </div>
-          <div class="list-type">好广告</div>
+          <div class="list-type">{{item.theme}}</div>
           <div class="list-title">{{item.title}}</div>
           <div class="list-desc">{{item.subtitle}}</div>
         </div>
@@ -55,21 +55,21 @@
 
     <div class="jx-activity">
       <div class="list-show-container">
-        <div class="act-item" v-for="item in 4" :key="item">
+        <div class="act-item test-11" v-for="item in activeList" :key="item.id" @click="getDetail(3,item.id)">
           <div class="act-up">
             <div class="act-img">
-              <div class="act-type">展览</div>
-              <img src="http://pic.topys.cn/uploads/20180403/1333385608.jpg?x-oss-process=style/event_cover" alt="">
+              <div class="act-type">{{item.type}}</div>
+              <img :src=item.titleimg alt="">
             </div>
-            <p class="act-item-title">可爱的哲学－小林 麻衣子个展</p>
-            <p class="act-item-sub">可爱如我</p>
+            <p class="act-item-title">{{item.title}}</p>
+            <p class="act-item-sub">{{item.subtitle}}</p>
           </div>
           <div class="act-down">
-            上海 | 2018/04/15
+            {{item.address.substring(0,2)}} | {{item.time.substring(0,10)}}
           </div>
         </div>
       </div>
-      <div class="more-activity">更多活动</div>
+      <!-- <div class="more-activity">更多活动</div> -->
     </div>
 
     <div class="show-area-til">
@@ -78,24 +78,24 @@
 
     <div class="jx-activity">
       <div class="list-show-container">
-        <div class="list-item" v-for="item in 6" :key="item">
+        <div class="list-item" v-for="(item,index) in hotestList" :key="index">
           <div class="list-up">
-            <div class="list-img">
-              <img src="http://pic.topys.cn/uploads/20180331/1781977170.jpg?x-oss-process=style/article_list" alt="">
+            <div class="list-img" @click="getDetail(1,item.artid)">
+              <img :src=item.titleimg alt="">
             </div>
-            <div class="list-type">好广告</div>
-            <div class="list-title">咋办！一向被我们嘲笑的日韩人民英语讲得都比咱好了</div>
-            <div class="list-desc">这样的Chinglish不被吊打才怪。</div>
+            <div class="list-type"></div>
+            <div class="list-title">{{item.title}}</div>
+            <div class="list-desc">{{item.subtitle}}</div>
           </div>
           <div class="list-down">
             <div class="list-count view"></div>
-            <div class="list-count-font">123</div>
+            <div class="list-count-font">{{item.viewnum}}</div>
             <div class="list-count comment"></div>
-            <div class="list-count-font">123</div>
+            <div class="list-count-font">{{item.comnum}}</div>
             <div class="list-count praise"></div>
-            <div class="list-count-font">123</div>
+            <div class="list-count-font">{{item.goodnum}}</div>
             <div class="list-author list-count-font">by
-              <span>秋小叶</span>
+              <span>{{item.nickname}}</span>
             </div>
           </div>
         </div>
@@ -120,12 +120,18 @@ import helper from "@/helper";
 import config from "@/config";
 // 首页的vue
 let queryArticle = config.Api.localAddress + "article/queryArticle";
+let queryActive = config.Api.localAddress + "active/queryAllActive";
 export default {
   data() {
     return {
       isLoading: false,
       latestList: [],
       hotestList: [],
+      activeList: [],
+      para: {
+        page: 1,
+        limit: 12
+      },
       message: "welcome to index.vue",
       scrollImg: [
         "http://pic.topys.cn/uploads/20180227/1483325017.png",
@@ -139,28 +145,49 @@ export default {
     testFun: function() {},
     showLoading() {
       this.isLoading = true;
+      this.para.limit = this.para.limit + 6; 
+      helper.httpGet(queryArticle, this.para).then(data => {
+        if (data.code != 2000) return;
+        this.latestList = data.result.slice(0, 6);
+        this.hotestList = data.result.slice(6);
+        this.isLoading = false;
+      });
     },
-    getDetail(type,artid){
+    getDetail(type, artid) {
       type = type || 1;
-      switch(type){
-        case 1: helper.routerGo("read",{
-          type:1,
-          id:artid
-        })
+      switch (type) {
+        case 1:
+          helper.routerGo("read", {
+            type: 1,
+            id: artid
+          });
+          break;
+        case 3:
+          helper.routerGo("createAct", {
+            type: 3,
+            id: artid
+          });
       }
     }
   },
   created: function() {
     // 这个时候进入组件 已经具有data属性
-    let para = {
-      page: 1,
-      limit: 10
-    };
+    let para = Object.assign({}, this.para);
     helper.httpGet(queryArticle, para).then(data => {
       if (data.code != 2000) return;
       this.latestList = data.result.slice(0, 6);
       this.hotestList = data.result.slice(6);
-      console.log(this.latestList);
+    });
+
+    let para1 = {
+      page: 1,
+      limit: 10
+    };
+
+    helper.httpGet(queryActive, para).then(data => {
+      if (data.code != 2000) return;
+      console.log("sssss", data);
+      this.activeList = data.result.slice(0, 4);
     });
   }
 };
@@ -182,6 +209,7 @@ export default {
 .list-item {
   width: 335px;
   height: 444px;
+  cursor: pointer;
   margin-bottom: 50px;
 }
 
@@ -272,5 +300,9 @@ export default {
 }
 .index-loading {
   margin-top: -30px;
+}
+.test-11 {
+  height: 540px;
+  cursor: pointer;
 }
 </style>

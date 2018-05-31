@@ -10,7 +10,7 @@
             </el-carousel>
         </div>
 
-        <div class="serach-select-input">
+        <!-- <div class="serach-select-input">
             <div style="float:left">
                 <el-select v-model="testValue" class="select-address" placeholder="请选择活动">
                     <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -24,21 +24,21 @@
             </div>
 
             <div class="serach-btn">搜索</div>
-        </div>
+        </div> -->
 
-        <div class="jx-activity">
+        <div class="jx-activity" style="margin-top:40px">
             <div class="list-show-container">
-                <div class="act-item" v-for="item in 16" :key="item">
+                <div class="act-item" v-for="item in getData" :key="item.id" style="margin-bottom:80px;cursor:pointer" @click="getDetail(3,item.id)">
                     <div class="act-up">
                         <div class="act-img">
-                            <div class="act-type">展览</div>
-                            <img src="http://pic.topys.cn/uploads/20180403/1333385608.jpg?x-oss-process=style/event_cover" alt="">
+                            <div class="act-type">{{item.type}}</div>
+                            <img :src=item.titleimg alt="">
                         </div>
-                        <p class="act-item-title">可爱的哲学－小林 麻衣子个展</p>
-                        <p class="act-item-sub">可爱如我</p>
+                        <p class="act-item-title">{{item.title}}</p>
+                        <p class="act-item-sub">{{item.subtitle.substring(0,15)}}</p>
                     </div>
                     <div class="act-down">
-                        上海 | 2018/04/15
+                        {{item.address.substring(0,2)}} | {{item.time.substring(0,10)}}
                     </div>
                 </div>
             </div>
@@ -58,82 +58,120 @@
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                testValue: "3",
-                isLoading: false,
-                options: [{
-                        value: "1",
-                        label: "所有活动"
-                    },
-                    {
-                        value: "2",
-                        label: "测试选择2"
-                    },
-                    {
-                        value: "3",
-                        label: "测试选择3"
-                    }
-                ],
-                scrollImg: ["http://pic.topys.cn/uploads/20180227/1483325017.png",
-                    "http://pic.topys.cn/uploads/20180123/220215725.png",
-                    "http://pic.topys.cn/uploads/20180327/1355392551.png",
-                    "http://pic.topys.cn/uploads/20180326/739536397.png"
-                ]
-            };
+import helper from "@/helper";
+import config from "@/config";
+let queryAllActive = config.Api.localAddress + "active/queryAllActive";
+export default {
+  data() {
+    return {
+      testValue: "3",
+      isLoading: false,
+      getData: [],
+      indexPara: {
+        page: 1,
+        limit: 16
+      },
+      options: [
+        {
+          value: "1",
+          label: "所有活动"
         },
-        methods: {
-            showLoading() {
-                this.isLoading = true;
-            }
+        {
+          value: "2",
+          label: "测试选择2"
         },
-        watch: {
-            testValue: function (newV, oldV) {
-                console.log("进入这里>>>");
-                console.log(oldV)
-                console.log(newV);
-            }
+        {
+          value: "3",
+          label: "测试选择3"
         }
+      ],
+      scrollImg: [
+        "http://pic.topys.cn/uploads/20180227/1483325017.png",
+        "http://pic.topys.cn/uploads/20180123/220215725.png",
+        "http://pic.topys.cn/uploads/20180327/1355392551.png",
+        "http://pic.topys.cn/uploads/20180326/739536397.png"
+      ]
+    };
+  },
+  methods: {
+    showLoading() {
+      this.isLoading = true;
+      this.search();
+    },
+    search() {
+      this.indexPara.limit =  this.indexPara.limit  + 16;
+      let para = Object.assign({}, this.indexPara);
+      helper.httpGet(queryAllActive, para).then(data => {
+        if (data.code != 2000) return;
+        this.getData = data.result;
+        this.isLoading = false;
+      });
+    },
+    getDetail(type,artid){
+      type = type || 3;
+      switch(type){
+        case 1: helper.routerGo("read",{
+          type:1,
+          id:artid
+        })
+        break;
+        case 3: helper.routerGo("createAct",{
+          type:3,
+          id:artid
+        })
+        break;
+      }
     }
+  },
+  watch: {
+    testValue: function(newV, oldV) {}
+  },
+  created: function() {
+    let para = Object.assign({}, this.indexPara);
+    helper.httpGet(queryAllActive, para).then(data => {
+      if (data.code != 2000) return;
+      this.getData = data.result;
+    });
+  }
+};
 </script>
 <style>
-    .activity-container {
-        width: 100%;
-        height: auto;
-    }
+.activity-container {
+  width: 100%;
+  height: auto;
+}
 
-    .swiper-activity {
-        height: 400px;
-    }
+.swiper-activity {
+  height: 400px;
+}
 
-    .serach-select-input {
-        width: 1100px;
-        height: 46px;
-        margin: 45px auto
-    }
+.serach-select-input {
+  width: 1100px;
+  height: 46px;
+  margin: 45px auto;
+}
 
-    .serach-select-input .el-input__inner {
-        height: 46px;
-        border-radius: 0px;
-        outline: none;
-    }
+.serach-select-input .el-input__inner {
+  height: 46px;
+  border-radius: 0px;
+  outline: none;
+}
 
-    .serach-select-input .el-select {
-        margin-right: 20px;
-    }
+.serach-select-input .el-select {
+  margin-right: 20px;
+}
 
-    .select-address {
-        width: 300px;
-    }
+.select-address {
+  width: 300px;
+}
 
-    .sserach-select-input .el-input-group__append {
-        background-color: #1D2129;
-        color: #ffffff;
-        border: 0px;
-    }
+.sserach-select-input .el-input-group__append {
+  background-color: #1d2129;
+  color: #ffffff;
+  border: 0px;
+}
 
-    .activity-loading {
-        margin-top: -40px;
-    }
+.activity-loading {
+  margin-top: -40px;
+}
 </style>

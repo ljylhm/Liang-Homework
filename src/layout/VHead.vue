@@ -1,7 +1,7 @@
 <template>
     <div class="container-head">
         <div class="fixed-content">
-            <div class="content">
+            <div class="ll-content">
                 <div class="ct-left">
                     <div class="ch-item" v-for="(item,index) in channelList" :key=index @click="pageChange(item.router)">{{item.name}}</div>
                 </div>
@@ -13,8 +13,8 @@
                          <img :src="headimg || defaultHeadImg" alt="">
                         <div class="drop-down" v-show="isDrop">
                             <div class="drop-down-list" @click="to('/personal')">个人中心</div>
-                            <div class="drop-down-list">我的草稿</div>
-                            <div class="drop-down-list">我的主页</div>
+                            <div class="drop-down-list" @click="to('/publish')">发布文章</div>
+                            <div class="drop-down-list" @click="to('/myPage')">我的主页</div>
                             <div class="drop-down-list" @click="out()">退出</div>
                         </div>
                     </div>
@@ -42,9 +42,6 @@
                     },{
                         name:"活动",
                         router:"/activity"
-                    },{
-                        name:"探索",
-                        router:"discovery"
                     }
                 ],
                 text:"",
@@ -90,6 +87,9 @@
            headimg:function(){
                return this.$store.state.userInfo.info.headimg;
            }
+        },
+        created: function(){
+            console.log(this.headimg);
         }
     };
 </script>
@@ -112,7 +112,7 @@
         background: #fff;
     }
 
-    .content {
+    .ll-content {
         width: 1137px;
         height: 100%;
         margin: 0 auto;

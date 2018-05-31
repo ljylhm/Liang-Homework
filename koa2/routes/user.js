@@ -14,6 +14,12 @@ router.get('/queryUser', async (ctx, next) => {
     ctx.body = result;
 })
 
+// router.get('/queryUserInfo',async (ctx, next) => {
+//     let result = await useAct.queryUser(ctx, next)
+//     ctx.type = "json";
+//     ctx.body = result;
+// }),
+
 // 验证手机号码
 router.get("/isNew", async (ctx, next) => {
     let result = await useAct.isNew(ctx, next)
@@ -30,6 +36,12 @@ router.post('/addUser', async (ctx, next) => {
 
 router.post('/userLogin', async (ctx, next) => {
     let result = await useAct.queryUserItem(ctx, next);
+    ctx.type = "json";
+    ctx.body = result;
+})
+
+router.post('/upDateUserInfo', async (ctx, next) => {
+    let result = await useAct.upDateUserInfo(ctx, next);
     ctx.type = "json";
     ctx.body = result;
 })

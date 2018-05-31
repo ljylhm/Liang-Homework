@@ -17,6 +17,15 @@ var helper = {
     router = _router;
   },
 
+  UTFTranslate:{
+    change:function(pValue){
+      return pValue.replace(/[^\u0000-\u00FF]/g,function($0){return escape($0).replace(/(%u)(\w{4})/gi,"&#x$2;")});
+    },
+    reChange:function(pValue){
+    return unescape(pValue.replace(/&#x/g,'%u').replace(/\\u/g,'%u').replace(/;/g,''));
+    }
+  },
+
   // SessionStorage
   sessionSet: function (name, value) {
     if (!this.argCheck(name, value)) return;
@@ -279,6 +288,13 @@ var helper = {
       return;
     }
     axios.all(arr).then(axios.spread(callback));
+  },
+
+  out:function(point){
+    point.$store.commit("changeStatus");
+    point.$store.commit("changeUserInfo",{});
+    this.localStroageClear('user');
+    this.routerGo('/index');
   },
 
   /****** loading方法 ******/

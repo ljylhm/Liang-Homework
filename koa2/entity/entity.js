@@ -57,11 +57,56 @@ let comment = function(commentid,artid,userid,content,creatAt,refid,goodnum){
     this.goodnum = goodnum || null;
 }
 
+let good = function(goodid,artid,userid){
+    this.goodid = goodid || null;
+    this.userid = userid || null;
+    this.artid = artid || null;
+}
+
+let active = function(activeid,userid,title,subtitle,titleimg,content,address,money,type,publisher,isExist,time){
+    this.activeid = activeid || null;
+    this.userid = userid || null;
+    this.title = title || null;
+    this.subtitle = subtitle || null;
+    this.titleimg = titleimg || null;
+    this.content = content || null;
+    this.address = address || null;
+    this.money = money || null;
+    this.type = type || null;
+    this.publisher = publisher || null;
+    this.isExist = isExist || null;
+    this.time = time || null;
+}
+
+let joiner = function(id,userid,phone,email,remark,num,activeid){
+    this.id = id || null;
+    this.userid = userid || null;
+    this.phone = phone || null;
+    this.email = email || null;
+    this.remark = remark || null;
+    this.num = num || null;
+    this.activeid = activeid || null;
+}
+
+let chat = function(id,tag,title,titleimg,content,creatAct,comnum){
+    this.id = id || null;
+    this.tag = tag || null;
+    this.title = title || null;
+    this.titleimg = titleimg || null;
+    this.content = content || null;
+    this.ncreatActum = creatAct || null;
+    this.comnum = comnum || null;
+}
+
 module.exports = {
-    result:result,
-    user:user,
-    books:books,
-    borrowRecords:borrowRecords,
-    article:article,
-    comment:comment
+    result: result,
+    user: user,
+    books: books,
+    borrowRecords: borrowRecords,
+    article: article,
+    comment: comment,
+    good: good,
+    active: active,
+    joiner: joiner,
+    chat: chat
 }

@@ -52,7 +52,9 @@ let helper = {
         if (this.getDataType(obj) != "Object" || this.getDataType(arr) != "Array") flag = false;
         else {
             for (var i in obj) {
-                if (arr.indexOf(i) >= 0) continue; // 如果有省略的对象,忽略
+                console.log('sss  '+i);
+                console.log('123  '+i);
+                if (arr.includes(i)) continue; // 如果有省略的对象,忽略
                 if (!obj[i] && obj[i] != 0) {
                     flag = false;
                     EmptyItem = i;

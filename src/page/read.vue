@@ -2,16 +2,17 @@
   <div class="container">
     <div class="read-container">
       <div class="read-topic">
-        <div>大艺术</div>
+        <div>{{getData.theme}}</div>
       </div>
       <div class="read-title">
         <h2>{{getData.title}}</h2>
       </div>
       <div class="read-tag">
-        <div v-for="item in tagArr" :key="item">{{item}}</div>
+        <div v-for="item in getData.tag" :key="item">{{item}}</div>
       </div>
       <div v-html=getData.content class="read-content"></div>
-      <v-comment :img=headimg :infoId="postData.id" :add="'http://10.15.89.81:3000/comment/queryCommentArt'"></v-comment>
+      <v-good :info="baseInfo" :type=1></v-good> 
+      <v-comment :img=headimg :infoId="postData.id" :add="'http://10.15.89.81:3000/comment/queryCommentArt'" :type=1></v-comment>
     </div>
     <v-footer></v-footer>
   </div>
@@ -21,7 +22,7 @@
 import helper from "@/helper";
 import config from "@/config";
 let queryArticleById = config.Api.localAddress + "article/queryArticleById";
-let queryComment = config.Api.localAddress + "comment/queryCommentArt"
+let queryComment = config.Api.localAddress + "comment/queryCommentArt";
 export default {
   data() {
     return {
@@ -33,7 +34,8 @@ export default {
       postData: {
         id: 1,
         type: 1
-      }
+      },
+      baseInfo:{}
     };
   },
   computed:{
@@ -43,9 +45,14 @@ export default {
   },
   created: function() {
     this.postData = this.$route.query || this.postData;
+    this.baseInfo = {
+      artid: this.postData.id,
+      userid: this.$store.state.userInfo.info.userid
+    }
     helper.httpGet(queryArticleById, this.postData).then(data => {
       if (!data.result) return;
       this.getData = data.result;
+      this.getData.tag = this.getData.tag.split("，")
     });
   }
 };

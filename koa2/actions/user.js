@@ -85,7 +85,7 @@ let addUser = async (ctx, next) => {
       console.log(user);
       // 默认插入用户的时候状态为存在状态 1存在 0不存在 创建时间默认为服务器当前时间
       // 并且返回插入用户的信息
-      let sqlRes_addUser = await sql.query("insert into user values (null,?,'男',?,?,?,?,18,1)", ["用户"+helper.getTimeStamp(),user.phone,user.email,user.password,defaultHeadimg]);
+      let sqlRes_addUser = await sql.query("insert into user values (null,?,1,?,?,?,?,1,18)", ["用户"+helper.getTimeStamp(),user.phone,user.email,user.password,defaultHeadimg]);
       result = new userEntity.result(2000, "添加成功", sqlRes_addUser);
     } catch (error) {
       console.log(error);
@@ -95,9 +95,32 @@ let addUser = async (ctx, next) => {
   return result;
 };
 
+let upDateUserInfo = async (ctx, next) => {
+  let query = ctx.request.body,
+      result;   
+  let user = new userEntity.user(query.nickname,query.sex,query.phone,query.email,query.password,query.headimg,query.userid);
+  // 检测user中是否有空对
+  if (!helper.detectIsEmpty(user).flag) {
+    let str = "缺少" + helper.detectIsEmpty(user).EmptyItem + "参数";
+    result = new userEntity.result(2001, str, null);
+  } else {
+    try {
+      // 默认插入用户的时候状态为存在状态 1存在 0不存在 创建时间默认为服务器当前时间
+      // 并且返回插入用户的信息
+      let sqlRes_addUser = await sql.query("UPDATE user set sex = ?,nickname = ?,phone = ?,email=?,headimg=?,age=?,password=? where userid = ?", [user.sex,user.nickname,user.phone,user.email,user.headimg,query.age,user.password,query.userid]);
+      result = new userEntity.result(2000, "修改成功", sqlRes_addUser);
+    } catch (error) {
+      console.log(error);
+      result = new userEntity.result(2002, "修改数据失败", null);
+    }
+  }
+  return result;
+}
+
 module.exports = {
   addUser: addUser,
   queryUserItem: queryUserItem,
   queryUser: queryUser,
-  isNew: isNew
+  isNew: isNew,
+  upDateUserInfo: upDateUserInfo
 };

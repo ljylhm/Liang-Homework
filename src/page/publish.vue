@@ -4,8 +4,8 @@
       <div class="pub-ban-content">
         <div class="pub-ban-left">编辑文章</div>
         <div class="pub-ban-right">
-          <div class="pub-ban-item">预览</div>
-          <div class="pub-ban-item">保存草稿</div>
+          <!-- <div class="pub-ban-item">预览</div>
+          <div class="pub-ban-item">保存草稿</div> -->
           <div class="pub-ban-item pub" @click="publish">发布</div>
         </div>
       </div>
